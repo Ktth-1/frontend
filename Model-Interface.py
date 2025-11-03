@@ -26,5 +26,6 @@ if st.button("Predict Stress"):
         "ACC_y": ACC_y,
         "ACC_z": ACC_z
     }
-    response = requests.post("http://127.0.0.1:8000/predict", json=payload)
+    response = requests.post("https://nonpestilent-mercedez-mousey.ngrok-free.dev/predict", json=payload)
     st.write("Predicted Stress Status:", response.json()["prediction"])
+
