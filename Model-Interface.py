@@ -27,11 +27,12 @@ if st.button("Predict Stress"):
         "ACC_z": ACC_z
     }
     response = requests.post("https://nonpestilent-mercedez-mousey.ngrok-free.dev/predict", json=payload)
-        if response.status_code == 200:
+    if response.status_code == 200:
         st.write("Predicted Stress Status:", response.json().get("prediction"))
     else:
         st.error(f"API Error: {response.status_code}")
         st.text(response.text)
     st.write("Predicted Stress Status:", response.json()["prediction"])
+
 
 
