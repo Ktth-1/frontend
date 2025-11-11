@@ -4,9 +4,9 @@ import requests
 
 st.title("Stress Detection Web App")
 
-BVP = st.number_input("Blood Volume Pulse")
-EDA = st.number_input("Electrodermal Activity")
-TEMP = st.number_input("Body Temperature")
+BVP = st.number_input("Blood Volume Pulse (V)")
+EDA = st.number_input("Electrodermal Activity (µS)")
+TEMP = st.number_input("Body Temperature (°C)")
 ACC_option = st.selectbox("Movement activity", ["No movement", "Little active", "Highly active"])
 
 # Map ACC option to example values (you can customize)
@@ -49,5 +49,6 @@ if st.button("Predict Stress"):
         st.error(f"API Error: {response.status_code}")
         st.text(response.text)
     st.write("Predicted Stress Status:", response.json()["prediction"])
+
 
 
