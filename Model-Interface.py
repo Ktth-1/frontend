@@ -7,13 +7,13 @@ st.title("Stress Detection Web App")
 BVP = st.number_input("Blood Volume Pulse (V)")
 EDA = st.number_input("Electrodermal Activity (µS)")
 TEMP = st.number_input("Body Temperature (°C)")
-ACC_option = st.selectbox("Movement activity", ["No movement", "Little active", "Highly active"])
+ACC_option = st.selectbox("Movement activity", ["low activity / stationary", "Little active", "Highly active"])
 
 # Map ACC option to example values (you can customize)
 ACC_map = {
-    "No movement": (0, 0, 0),
-    "Little active": (10, 5, 12),
-    "Highly active": (30, -6, 55)
+    "low activity / stationary": (-44, -25, 4),        # global 25th percentile → low activity / stationary
+    "Little active": (7, 1, 14),         # global median → light motion
+    "Highly active": (41, 23, 34)        # global 75th percentile → strong motion
 }
 ACC_x, ACC_y, ACC_z = ACC_map[ACC_option]
 
@@ -49,6 +49,7 @@ if st.button("Predict Stress"):
         st.error(f"API Error: {response.status_code}")
         st.text(response.text)
     st.write("Predicted Stress Status:", response.json()["prediction"])
+
 
 
 
