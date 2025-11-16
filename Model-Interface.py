@@ -4,29 +4,30 @@ import requests
 
 st.title("Stress Detection Web App")
 
-BVP = st.number_input("Blood Volume Pulse (V)")
+BVP = st.number_input("Blood Volume Pulse (-500 - 1200)")
 EDA = st.number_input("Electrodermal Activity (µS)")
 TEMP = st.number_input("Body Temperature (°C)")
-ACC_option = st.selectbox("Movement activity", ["low activity / stationary", "Little active", "Highly active"])
+ACC_option = st.selectbox("Movement activity", ["No movement", "Little movement", "Medium movement", "High movement"])
 
 # Map ACC option to example values (you can customize)
 ACC_map = {
-    "low activity / stationary": (-44, -25, 4),        # global 25th percentile → low activity / stationary
-    "Little active": (7, 1, 14),         # global median → light motion
-    "Highly active": (41, 23, 34)        # global 75th percentile → strong motion
+    "No movement": (5, 5, 20),
+    "Little movement": (40, 30, 60),
+    "Medium movement": (100, 80, 140),
+    "High movement": (250, 200, 350)
 }
 ACC_x, ACC_y, ACC_z = ACC_map[ACC_option]
 
 if st.button("Predict Stress"):
     # Validate input ranges
-    if BVP < 0 or BVP > 3:
-        st.error("BVP value is out of realistic range (0–3 V).")
+    if BVP < -500 or BVP > 1200:
+        st.error("BVP value is out of realistic range (-500 - 1200).")
         st.stop()
-    if EDA < 0 or EDA > 100:
-        st.error("EDA value is out of realistic range (0–100 µS).")
+    if EDA < 0 or EDA > 21:
+        st.error("EDA value is out of realistic range (0–20 µS).")
         st.stop()
-    if TEMP < 25 or TEMP > 43:
-        st.error("Body Temperature value is out of realistic range (25–43°C).")
+    if TEMP < 30 or TEMP > 40:
+        st.error("Body Temperature value is out of realistic range (30-40°C).")
         st.stop()
 
     # Map ACC
@@ -49,6 +50,7 @@ if st.button("Predict Stress"):
         st.error(f"API Error: {response.status_code}")
         st.text(response.text)
     st.write("Predicted Stress Status:", response.json()["prediction"])
+
 
 
 
