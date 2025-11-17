@@ -33,8 +33,6 @@ else:
 
 
 
-ACC_x, ACC_y, ACC_z = ACC_map[ACC_option]
-
 # -----------------------------
 # SEND TO API
 # -----------------------------
@@ -78,6 +76,7 @@ if st.button("Predict Stress", key="predict_button"):
     else:
         st.error(f"API Error: {response.status_code}")
         st.text(response.text)
+
 
 
 
