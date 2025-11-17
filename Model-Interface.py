@@ -7,7 +7,6 @@ st.title("Stress Detection Web App")
 BVP = st.number_input("Blood Volume Pulse - (-500 - 1200)")
 EDA = st.number_input("Electrodermal Activity (µS)")
 TEMP = st.number_input("Body Temperature (°C)")
-ACC_option = st.selectbox("Movement activity", ["No movement", "Little movement", "Medium movement", "High movement"])
 
 # Map ACC option to example values (you can customise)
 mode = st.radio("ACC Input Mode:", ["Dropdown", "Manual"], key="acc_mode")
@@ -79,6 +78,7 @@ if st.button("Predict Stress", key="predict_button"):
     else:
         st.error(f"API Error: {response.status_code}")
         st.text(response.text)
+
 
 
 
