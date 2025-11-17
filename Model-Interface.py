@@ -9,30 +9,47 @@ EDA = st.number_input("Electrodermal Activity (µS)")
 TEMP = st.number_input("Body Temperature (°C)")
 ACC_option = st.selectbox("Movement activity", ["No movement", "Little movement", "Medium movement", "High movement"])
 
-# Map ACC option to example values (you can customize)
-mode = st.radio("Movement input mode", ["Dropdown (simple)", "Manual (advanced)"])
+# Map ACC option to example values (you can customise)
+mode = st.radio("ACC Input Mode:", ["Dropdown", "Manual"], key="acc_mode")
 
-if mode == "Dropdown (simple)":
-    ACC_option = st.selectbox("Movement activity",
-                              ["No movement", "Little movement", "Medium movement", "High movement"])
-    ACC_map = {
+ACC_map = {
     "No movement":        (2, -3, 12),    # magnitude ≈ 12
     "Little movement":    (25, 10, 45),   # magnitude ≈ 52
     "Medium movement":    (55, -20, 85),  # magnitude ≈ 102
     "High movement":      (110, -60, 180) # magnitude ≈ 215
 }
+
+if mode == "Dropdown":
+    ACC_option = st.selectbox(
+        "Movement activity",
+        ["No movement", "Little movement", "Medium movement", "High movement"],
+        key="acc_dropdown"
+    )
     ACC_x, ACC_y, ACC_z = ACC_map[ACC_option]
+
 else:
-    ACC_x = st.number_input("ACC_x (manual)")
-    ACC_y = st.number_input("ACC_y (manual)")
-    ACC_z = st.number_input("ACC_z (manual)")
+    ACC_x = st.number_input("ACC_x", key="acc_x_manual")
+    ACC_y = st.number_input("ACC_y", key="acc_y_manual")
+    ACC_z = st.number_input("ACC_z", key="acc_z_manual")
+
 
 
 ACC_x, ACC_y, ACC_z = ACC_map[ACC_option]
 
-if st.button("Predict Stress"):
+# -----------------------------
+# SEND TO API
+# -----------------------------
+if st.button("Predict Stress", key="predict_button"):
 
-    # Validate input ranges
+    payload = {
+        "BVP": BVP,
+        "EDA": EDA,
+        "TEMP": TEMP,
+        "ACC_x": ACC_x,
+        "ACC_y": ACC_y,
+        "ACC_z": ACC_z
+    }
+     # Validate input ranges
     if BVP < -500 or BVP > 1200:
         st.error("BVP value is out of realistic range (-500 - 1200).")
         st.stop()
@@ -43,21 +60,12 @@ if st.button("Predict Stress"):
         st.error("Body Temperature value is out of realistic range (30-40°C).")
         st.stop()
 
-    payload = {
-        "BVP": BVP,
-        "EDA": EDA,
-        "TEMP": TEMP,
-        "ACC_x": ACC_x,
-        "ACC_y": ACC_y,
-        "ACC_z": ACC_z
-    }
+    st.write(payload)  # debug (optional)
 
-    response = requests.post(
-        "https://nonpestilent-mercedez-mousey.ngrok-free.dev/predict",
-        json=payload
-    )
-
+    response = requests.post( "https://nonpestilent-mercedez-mousey.ngrok-free.dev/predict", json=payload )
+    
     # Handle API response safely
+    
     try:
         data = response.json()
     except:
