@@ -10,12 +10,23 @@ TEMP = st.number_input("Body Temperature (°C)")
 ACC_option = st.selectbox("Movement activity", ["No movement", "Little movement", "Medium movement", "High movement"])
 
 # Map ACC option to example values (you can customize)
-ACC_map = {
+mode = st.radio("Movement input mode", ["Dropdown (simple)", "Manual (advanced)"])
+
+if mode == "Dropdown (simple)":
+    ACC_option = st.selectbox("Movement activity",
+                              ["No movement", "Little movement", "Medium movement", "High movement"])
+    ACC_map = {
     "No movement":        (2, -3, 12),    # magnitude ≈ 12
     "Little movement":    (25, 10, 45),   # magnitude ≈ 52
     "Medium movement":    (55, -20, 85),  # magnitude ≈ 102
     "High movement":      (110, -60, 180) # magnitude ≈ 215
 }
+    ACC_x, ACC_y, ACC_z = ACC_map[ACC_option]
+else:
+    ACC_x = st.number_input("ACC_x (manual)")
+    ACC_y = st.number_input("ACC_y (manual)")
+    ACC_z = st.number_input("ACC_z (manual)")
+
 
 ACC_x, ACC_y, ACC_z = ACC_map[ACC_option]
 
@@ -60,6 +71,7 @@ if st.button("Predict Stress"):
     else:
         st.error(f"API Error: {response.status_code}")
         st.text(response.text)
+
 
 
 
