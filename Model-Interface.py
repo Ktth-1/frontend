@@ -11,11 +11,12 @@ ACC_option = st.selectbox("Movement activity", ["No movement", "Little movement"
 
 # Map ACC option to example values (you can customize)
 ACC_map = {
-    "No movement": (15, 12, 20),
-    "Little movement": (60, 55, 80),
-    "Medium movement": (150, 135, 200),
-    "High movement": (320, 280, 450)
+    "No movement":      (-63,   5,  13),
+    "Little movement":  (-65, -12,  10),
+    "Medium movement":  (-39,  61,  -4),
+    "High movement":    (-41,  70,  30),
 }
+
 ACC_x, ACC_y, ACC_z = ACC_map[ACC_option]
 
 if st.button("Predict Stress"):
@@ -58,6 +59,7 @@ if st.button("Predict Stress"):
     else:
         st.error(f"API Error: {response.status_code}")
         st.text(response.text)
+
 
 
 
