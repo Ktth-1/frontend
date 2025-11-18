@@ -73,9 +73,11 @@ if st.button("Predict Stress", key="predict_button"):
     if response.status_code == 200:
         st.write("Predicted Stress Status:", data.get("prediction"))
         st.write("Probability Stress Percent:", data.get("probability"))
+        st.write("Advice:", data.get("advice"))
     else:
         st.error(f"API Error: {response.status_code}")
         st.text(response.text)
+
 
 
 
